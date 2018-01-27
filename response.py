@@ -15,7 +15,7 @@ def lat_lon(*args):
     data = response.json()[0]
     # Zwraca szerokosc i dlugosc geograficzna
     # latwo mozna ja przerobic aby zwracala inne elementy
-    return {'lat':data['lat'], 'lon':data['lon']}
+    return {'lat':float(data['lat']), 'lon':float(data['lon'])}
 
 if __name__ == '__main__':
     resp = lat_lon('83-323', 'Gdynia Morska', '1/3')
