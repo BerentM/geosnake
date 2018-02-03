@@ -13,6 +13,7 @@ class DBHelper():
         self.source = Table('source', metadata, autoload=True, autoload_with=engine)
         self.distances = Table('distances', metadata, autoload=True, autoload_with=engine)
         self.conn = engine.connect()
+
     
     def checkSource(self,post_code,city,street,house_number):
         """Sprawdzenie czy punkt poczatkowy jest już w bazie"""
@@ -32,6 +33,7 @@ class DBHelper():
         except Exception:
             return False
 
+
     def insertSource(self, post_code='', city='', street='', house_number=''):
         """Dodawanie nowego punktu początkowego do bazy danych
         i uzupełnianie danych o dł i szer geograficzną"""
@@ -43,12 +45,14 @@ class DBHelper():
                 )
         self.conn.execute(ins)
 
+
     def insertDestination(self, name='', latitude=None, longitude=None):
         """Dodaj nowy punkt docelowy"""
         ins = self.tourDestination.insert().values(\
                 name=name, latitude=latitude, longitude=longitude\
                 )
         self.conn.execute(ins)
+
 
     def getDestinations(self, source_id=None):
         """Lista wszycstkich punktów docelowych"""
@@ -69,6 +73,7 @@ class DBHelper():
             output.append(row)
         return output 
 
+
     def getLastSource(self, source_id=None):
         """Ostatnio wprowadzony punkt poczatkowy"""
         output = []
@@ -82,6 +87,7 @@ class DBHelper():
         for row in r:
             output.append(row)
         return output
+
 
     def calculateDistance(self, source_id=None):
         """Insert do tabeli distances, obliczenie odległości"""
@@ -99,7 +105,6 @@ class DBHelper():
             lat1 = row[0]
             lon1 = row[1]
             source_id = row[2]
-
         s2 = select([self.tourDestination.c.latitude,
             self.tourDestination.c.longitude,
             self.tourDestination.c.id]).distinct()
@@ -110,7 +115,6 @@ class DBHelper():
         distancesList = []
         for row3 in r3: 
             distancesList.append(row3)
-        print(distancesList)
         ins = []
         for row2 in r2:
             lat2 = row2[0]
@@ -122,5 +126,4 @@ class DBHelper():
                 ins.append({'source_id': source_id, \
                     'destination_id': destination_id, \
                     'distance': dist})
-                print(ins)
         self.conn.execute(self.distances.insert(), ins)

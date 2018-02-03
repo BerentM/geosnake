@@ -7,21 +7,22 @@ from flask import make_response
 import datetime 
 import os
 
+
 app = Flask(__name__)
 DB = DBHelper()
-
 app.secret_key = os.urandom(24)
+
 
 @app.route("/")
 def home():
     try:
         lastSourceId = session.get('lastSourceId', None)
-        print("ostatnie id: ", lastSourceId)
         lastSource = DB.getLastSource(lastSourceId)
         destinations = DB.getDestinations(lastSourceId)
     except Exception as e:
         print("home error: ", e)
     return render_template("home.html", data=[lastSource, destinations])
+
 
 @app.route("/add", methods=["POST"])
 def add():
@@ -41,6 +42,7 @@ def add():
     except Exception as e:
         print("add error: ", e)
     return redirect('/')
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

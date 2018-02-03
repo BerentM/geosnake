@@ -8,7 +8,7 @@ def lat_lon(*args):
         adr = adr+"+"+arg.replace(' ','+').replace(',','')
     adres = adr[1:]
 
-    time.sleep(1.5)
+    time.sleep(1.25)
     response = requests.get("https://nominatim.openstreetmap.org" \
             "/?format=json&addressdetails=1&q={}&format=json&limit=1".format(adres))
 
