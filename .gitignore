@@ -1,4 +1,6 @@
 *.swp
 *.pyc
 __pycache__/*
+db_stuff/__pycache__/*
 core.db
+test.py
